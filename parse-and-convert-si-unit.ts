@@ -242,7 +242,7 @@ export function parseAndConvertSiUnit(
 } {
   if (v === undefined || v === null)
     return { parsedUnit: null, unitOfValue: null, value: null }
-  if (typeof v === "string" && v.match(/^-?[\d.]+$/))
+  if (typeof v === "string" && v.trim().match(/^-?[\d.]+$/))
     return {
       value: Number.parseFloat(v),
       parsedUnit: null,
