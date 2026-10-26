@@ -38,7 +38,8 @@ export function formatSiUnit(value?: number | null): string {
     scaled = value / prefix.value
   }
 
-  let formatted = scaled.toPrecision(3)
+  // Trim only the significand: trailing zeros in an exponent affect magnitude.
+  let [formatted, exponent] = scaled.toPrecision(3).split("e")
 
   // Only remove trailing zeros if there's a non-zero digit after the decimal
   if (formatted.includes(".") && !/\.0+$/.test(formatted)) {
@@ -48,7 +49,7 @@ export function formatSiUnit(value?: number | null): string {
   // Remove any pure ".0" or ".00" suffixes
   formatted = formatted.replace(/\.0+$/, "")
 
-  return `${formatted}${prefix.symbol}`
+  return `${formatted}${exponent === undefined ? "" : `e${exponent}`}${prefix.symbol}`
 }
 
 export { formatMm } from "./format-mm"
