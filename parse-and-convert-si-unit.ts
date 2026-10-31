@@ -181,7 +181,7 @@ for (const [baseUnit, info] of Object.entries(unitMappings)) {
 
 function getBaseTscircuitUnit(unit: string): UnitInfo {
   for (const info of Object.values(unitMappings)) {
-    if (unit in info.variants) {
+    if (Object.prototype.hasOwnProperty.call(info.variants, unit)) {
       return {
         baseUnit: info.baseUnit,
         conversionFactor: info.variants[unit]!,
