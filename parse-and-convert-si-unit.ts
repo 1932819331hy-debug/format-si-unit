@@ -271,7 +271,14 @@ export function parseAndConvertSiUnit(
   if (!unitReversed) {
     throw new Error(`Could not determine unit: "${v}"`)
   }
-  const unit = unitReversed.split("").reverse().join("")
+  let unit = unitReversed.split("").reverse().join("")
+  // A trailing decimal point belongs to a complete adjacent mantissa (1.cm).
+  if (
+    /^\.[^.]/.test(unit) &&
+    /^[+-]?\d+$/.test(v.trim().slice(0, -unit.length))
+  ) {
+    unit = unit.slice(1)
+  }
 
   const numberPart = v.slice(0, -unit.length)
   const bareSiPrefixMultiplier = getSiPrefixMultiplier(unit)
